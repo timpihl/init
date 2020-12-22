@@ -1,0 +1,31 @@
+#!/bin/bash
+#
+# Toker
+#
+HOST=$(hostname | sed 's/.*/\u&/')
+SYSINFO=$(date '+%A %d %B %R')
+USERS=$(users | wc -w)
+SYSLOAD=$(cat /proc/loadavg | awk '{print $1}')
+SSD_A=$(df -h / | awk '/\// {print $(NF-1)}')
+SSD_B=$(df -h / | awk '/\// {print $(NF-4)}')
+RAM_A=$(free -m | awk '/Mem/ { printf("%3.1f%%", $3/$2*100) }')
+RAM_B=$(cat /proc/meminfo | awk '/MemTotal:/ {printf "%.0fG\n",$2/1020^2}')
+SWAP_A=$(free -m | awk '/Swap/ { if ($2) printf ("%3.1f%%", $3/$2*100) }')
+PS=$(ps -e --no-headers | wc -l)
+NET=$(ls /sys/class/net | grep -vE 'lo|veth')
+
+echo -e "\n  Welcome to Toker $HOST \n"
+echo -e "  System information as of:\t $SYSINFO"
+echo -e "  Logged in users:\t\t $USERS"
+echo -e "  System load:\t\t\t $SYSLOAD"
+echo -e "  Usage of /:\t\t\t $SSD_A of $SSD_B"
+echo -e "  Ram usage:\t\t\t $RAM_A of $RAM_B"
+echo -e "  Swap usage:\t\t\t $SWAP_A"
+echo -e "  Processes:\t\t\t $PS"
+
+for a in $NET
+do
+  echo -e "  IP for $a:\t\t $(ip -4 addr show $a | grep -oP '(?<=inet\s)\d+(\.\d+){3}' | head -1)";
+done
+
+echo -e "\n  Server has been up for $(uptime -p | sed 's/up //g' | sed 's/,/ and/g') \n"

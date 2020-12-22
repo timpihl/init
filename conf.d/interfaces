@@ -1,0 +1,24 @@
+#
+# Toker network configuration
+#
+source /etc/network/interfaces.d/*
+
+# The loopback network interface
+auto lo
+iface lo inet loopback
+
+# eth0 configuration
+allow-hotplug eth0
+iface eth0 inet dhcp
+
+# toker0 configuration
+allow-hotplug toker0
+iface toker0 inet dhcp
+
+# toker1 configuration
+allow-hotplug toker1
+iface toker1 inet dhcp
+
+# toker2 configuration
+allow-hotplug toker2
+iface toker2 inet dhcp

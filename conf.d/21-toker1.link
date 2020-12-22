@@ -1,0 +1,10 @@
+#
+# Toker
+#
+
+[Match]
+OriginalName=eth1
+
+[Link]
+Description=Network interface for toker1
+Name=toker1
